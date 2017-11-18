@@ -19,12 +19,24 @@ Spider Sms Service
 
 
 # 数据库文件 简单描述
-/DB/
-#SMS.
-|id|number|content|time|imsi|iccid|simnum
 
-#Devices
-|id|Comport|phonum|imsi|iccid|imei
+#### /DB 
+
+    #SMS
+      id      流水记录编号
+      number  编号
+      content 短信内容
+      time    短信接收时间
+      imsi    IMSI
+      iccid   ICCID
+      simnum  电话号码
+    #Devices
+      id      流水Id
+      Comport 端口
+      phonum  电话号码
+      imsi    IMSI
+      iccid   ICCID
+      imei    IMEI
 
 在描述中不存在但是在数据库中存在的字段 忽视
 
