@@ -7,3 +7,5 @@ Spider.CommandApi/obj/
 *.tmp
 Spider.SmsClient/obj/
 ~$项目需求文档.docx
+Spider.SmsClient/bin/
+Spider.SmsServiceTests/bin/
