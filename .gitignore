@@ -1,0 +1,9 @@
+*.suo
+Spider.SmsService/obj/
+Spider.SmsService/bin/
+Spider.SmsServiceTests/obj/
+Spider.CommandApi/bin/
+Spider.CommandApi/obj/
+*.tmp
+Spider.SmsClient/obj/
+~$项目需求文档.docx
