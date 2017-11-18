@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using static System.Runtime.Remoting.RemotingConfiguration;
 
@@ -14,7 +13,7 @@ namespace Spider.SmsClient
         private static void Main()
         {
             //注册配置文件
-            Configure(Process.GetCurrentProcess().MainModule.FileName + ".config", false);
+            Configure(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, false);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

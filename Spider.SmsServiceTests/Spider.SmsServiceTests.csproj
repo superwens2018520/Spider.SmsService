@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -55,6 +56,10 @@
     <Compile Include="Service\SmsServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Spider.CommandApi\Spider.CommandApi.csproj">
+      <Project>{088bffae-6362-4c57-9e2f-4f12b0586ea3}</Project>
+      <Name>Spider.CommandApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spider.SmsService\Spider.SmsService.csproj">
       <Project>{473A99D4-3B1B-4C1A-842A-42715DBC4DB0}</Project>
       <Name>Spider.SmsService</Name>

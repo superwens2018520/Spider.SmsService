@@ -15,7 +15,7 @@ namespace Spider.GsmModemServer
         {
             Console.WriteLine($"Start Modem Service");
             //注册配置文件
-            Configure(Process.GetCurrentProcess().MainModule.FileName + ".config", false);
+            Configure(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile,false);
 
             //开启短信服务器
             SmsServiceHelper.StartService();

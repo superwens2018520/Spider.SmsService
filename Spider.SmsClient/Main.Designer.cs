@@ -35,14 +35,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Content = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ICCID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Content = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(413, 7);
+            this.button1.Location = new System.Drawing.Point(1019, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(137, 28);
             this.button1.TabIndex = 0;
@@ -103,24 +103,22 @@
             this.Id.Text = "Id";
             this.Id.Width = 42;
             // 
-            // Content
-            // 
-            this.Content.Text = "Content";
-            this.Content.Width = 350;
-            // 
             // Time
             // 
-            this.Time.DisplayIndex = 2;
             this.Time.Text = "Time";
             this.Time.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Time.Width = 107;
             // 
             // ICCID
             // 
-            this.ICCID.DisplayIndex = 3;
             this.ICCID.Text = "ICCID";
             this.ICCID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.ICCID.Width = 127;
+            // 
+            // Content
+            // 
+            this.Content.Text = "Content";
+            this.Content.Width = 350;
             // 
             // Main
             // 

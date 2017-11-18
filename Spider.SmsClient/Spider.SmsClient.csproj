@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\RemoteServiceHelper.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,7 +78,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spider.SmsService\Spider.CommandApi\Spider.CommandApi.csproj">
+    <ProjectReference Include="..\Spider.CommandApi\Spider.CommandApi.csproj">
       <Project>{088bffae-6362-4c57-9e2f-4f12b0586ea3}</Project>
       <Name>Spider.CommandApi</Name>
     </ProjectReference>
