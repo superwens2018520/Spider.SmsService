@@ -1,13 +1,30 @@
 ﻿using System;
 using Spider.CommandApi.Service;
+using static System.Configuration.ConfigurationSettings;
 
 namespace Spider.SmsClient.Helper
 {
     public class RemoteServiceHelper
     {
-        private ISmsService _smsService;
+        private static ISmsService _smsService;
 
-        public ISmsService SmsService
+        public static string RemoteSmsServiceAddress
+        {
+            get
+            {
+                var url = AppSettings["SmsServiceAddress"];
+                if (!(url.EndsWith("/") || url.EndsWith("\\")))
+                {
+                    url = url + "/";
+                }
+                return url;
+            }
+        }
+
+        /// <summary>
+        ///     SMS 服务
+        /// </summary>
+        public static ISmsService SmsService
         {
             get
             {
@@ -16,7 +33,10 @@ namespace Spider.SmsClient.Helper
                     try
                     {
                         //注册tcpchannel
-                        _smsService = (ISmsService) Activator.GetObject(typeof (ISmsService), typeof (ISmsService).Name);
+                        _smsService =
+                            (ISmsService)
+                                Activator.GetObject(typeof (ISmsService),
+                                    RemoteSmsServiceAddress + typeof (ISmsService).Name);
                     }
                     catch (Exception)
                     {
