@@ -38,8 +38,20 @@ namespace Spider.CommandApi.Service
         SmsRecord GetSmsRecord(string iccid, SmsRecordType smsRecordType, string Otp, DateTime? rDateTime = null);
 
         /// <summary>
-        ///     开始执行任务
+        /// 开始执行任务
+        /// 系统会在指定时间内触发该任务
         /// </summary>
         void DoJob();
+
+
+        /// <summary>
+        /// 添加一个Otp请求任务 
+        /// 该方法由远程客户端进行调用
+        /// 调用后本地会创建一个检查任务
+        /// 当SMS系统中获得到与该任务匹配的数据后 
+        /// 系统调用远程服务功能将数据提交到远程服务器中
+        /// </summary>
+        /// <returns></returns>
+        void AddOtpJob(JobSmsOtp job);
     }
 }

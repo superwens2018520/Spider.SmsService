@@ -31,6 +31,7 @@ namespace Spider.SmsService.Helper
                 SmsService = new Service.SmsService();
             }
 
+            //系统定时秒钟执行一次检查任务
             if (JobTimer == null)
             {
                 JobTimer = new Timer(s =>
@@ -48,7 +49,7 @@ namespace Spider.SmsService.Helper
                     {
                         CheckJobFlag = false;
                     }
-                });
+                },null,2000,2000);
             }
         }
     }
