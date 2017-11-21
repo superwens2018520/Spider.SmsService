@@ -46,7 +46,7 @@ Devices
   
 ### 2017-11-21 
   1. 对短信内容进行解析
-  2. 在client段中新增解析后的字段内容
+  2. 在client端中新增解析后的字段内容
 
 # 扩展帮助文件 
 http://www.wavecomcn.com/help/162.html
