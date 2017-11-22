@@ -1,46 +1,197 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
+using System.Text;
 using Spider.CommandApi.Enum;
 using Spider.CommandApi.Model;
 using Spider.CommandApi.Service;
+using Spider.SmsService.Helper;
 
 namespace Spider.SmsService.Service
 {
     public class SmsService : MarshalByRefObject, ISmsService
     {
-        /// <summary>
-        /// TODO 
-        /// </summary>
-        /// <param name="iccid"></param>
-        /// <param name="startDateTime"></param>
-        /// <param name="endDateTime"></param>
-        /// <returns></returns>
         public List<SmsRecord> GetSmsRecords(string iccid, DateTime? startDateTime = null, DateTime? endDateTime = null)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var timeInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                var strSql = new StringBuilder("SELECT id, number, content, time, imsi, iccid, simnum FROM L_SMS WHERE 1 = 1 ");
+                if (!string.IsNullOrEmpty(iccid))
+                    strSql.Append(" AND iccid = " + iccid);
+                strSql.Append(" AND time >= @Stime AND time <= @Etime");
+                var commandParameters = new OleDbParameter[2];
+                if (startDateTime != null)
+                {
+                    var dt = TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc((DateTime)startDateTime),
+                        timeInfo);
+                    commandParameters[0] = new OleDbParameter("Stime", dt);
+                }
+                else
+                {
+                    var dt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeInfo);
+                    commandParameters[0] = new OleDbParameter("Stime", dt);
+                }
+                if (endDateTime != null)
+                {
+                    var dt = TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc((DateTime)endDateTime),
+                        timeInfo);
+                    commandParameters[1] = new OleDbParameter("Etime", dt);
+                }
+                else
+                {
+                    var dt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeInfo);
+                    commandParameters[1] = new OleDbParameter("Etime", dt);
+                }
+                var ds = AccessHelper.ExecuteDataSet(AccessHelper.Conn + "SMS.mdb", strSql.ToString(), commandParameters);
+                var list = new List<SmsRecord>();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    var dt = ds.Tables[0];
+                    for (var i = 0; i < dt.Rows.Count; i++)
+                    {
+                        int id;
+                        DateTime dateTime;
+                        if (int.TryParse(dt.Rows[i]["id"].ToString(), out id) &&
+                            DateTime.TryParse(dt.Rows[i]["time"].ToString(), out dateTime))
+                        {
+                            var entity = new SmsRecord
+                            {
+                                Id = id,
+                                Number = dt.Rows[i]["number"].ToString(),
+                                Content = dt.Rows[i]["content"].ToString(),
+                                Time = dateTime,
+                                Imsi = dt.Rows[i]["imsi"].ToString(),
+                                Iccid = dt.Rows[i]["iccid"].ToString(),
+                                Simnum = dt.Rows[i]["simnum"].ToString()
+                            };
+                            list.Add(entity);
+                        }
+                    }
+                }
+                return list;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("GetSmsRecords Error! Msg:" + ex.Message);
+            }
+            return null;
         }
-
-        /// <summary>
-        /// TODO 
-        /// </summary>
-        /// <returns></returns>
+        
         public List<SimDevice> GetSimRecords()
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var strSql = new StringBuilder("SELECT id, Comport, phonum, imsi, iccid, imei FROM Devices WHERE 1 = 1 ");
+                var ds = AccessHelper.ExecuteDataSet(AccessHelper.Conn + "OtInfo.mdb", strSql.ToString(), null);
+                var list = new List<SimDevice>();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    var dt = ds.Tables[0];
+                    for (var i = 0; i < dt.Rows.Count; i++)
+                    {
+                        int id;
+                        if (int.TryParse(dt.Rows[i]["id"].ToString(), out id))
+                        {
+                            var entity = new SimDevice
+                            {
+                                Id = id,
+                                Comport = dt.Rows[i]["Comport"].ToString(),
+                                Phonum = dt.Rows[i]["phonum"].ToString(),
+                                Imsi = dt.Rows[i]["imsi"].ToString(),
+                                Iccid = dt.Rows[i]["iccid"].ToString(),
+                                Imei = dt.Rows[i]["imei"].ToString()
+                            };
+                            list.Add(entity);
+                        }
+                    }
+                }
+                return list;
 
-        /// <summary>
-        /// TODO 
-        /// </summary>
-        /// <param name="iccid"></param>
-        /// <param name="smsRecordType"></param>
-        /// <param name="Otp"></param>
-        /// <param name="rDateTime"></param>
-        /// <returns></returns>
-        public SmsRecord GetSmsRecord(string iccid, SmsRecordType smsRecordType, string Otp, DateTime? rDateTime = null)
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("GetSimRecords Error! Msg:" + ex.Message);
+            }
+            return null;
+        }
+        
+        public SmsRecord GetSmsRecord(string iccid, SmsRecordType smsRecordType, string otp, DateTime? rDateTime = null)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var timeInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                var strSql = new StringBuilder("SELECT id, number, content, time, imsi, iccid, simnum FROM L_SMS WHERE 1 = 1 ");
+                if (!string.IsNullOrEmpty(iccid))
+                    strSql.Append(" AND iccid = " + iccid);
+                switch (smsRecordType)
+                {
+                    case SmsRecordType.AddMemberOtp:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                    case SmsRecordType.Balance:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                    case SmsRecordType.ConfirmWithdrawOtp:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                    case SmsRecordType.DelMemberOtp:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                    case SmsRecordType.SimBalance:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                    case SmsRecordType.WithdrawOtp:
+                        //strSql.Append(" AND  =  ");
+                        break;
+                }
+                if (!string.IsNullOrEmpty(otp))
+                {
+                    strSql.Append(" AND content like %" + otp + "% ");
+                }
+                var needParam = false;
+                var commandParameters = new OleDbParameter[1];
+                if (rDateTime != null)
+                {
+                    strSql.Append(" AND time = @time ");
+                    var dt = TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc((DateTime)rDateTime),
+                        timeInfo);
+                    commandParameters[0] = new OleDbParameter("time", dt);
+                    needParam = true;
+                }
+                var ds = needParam
+                    ? AccessHelper.ExecuteDataSet(AccessHelper.Conn + "SMS.mdb", strSql.ToString(), commandParameters)
+                    : AccessHelper.ExecuteDataSet(AccessHelper.Conn + "SMS.mdb", strSql.ToString(), null);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    var dt = ds.Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        int id;
+                        DateTime dateTime;
+                        if (int.TryParse(dt.Rows[0]["id"].ToString(), out id) &&
+                            DateTime.TryParse(dt.Rows[0]["time"].ToString(), out dateTime))
+                        {
+                            return new SmsRecord
+                            {
+                                Id = id,
+                                Number = dt.Rows[0]["number"].ToString(),
+                                Content = dt.Rows[0]["content"].ToString(),
+                                Time = dateTime,
+                                Imsi = dt.Rows[0]["imsi"].ToString(),
+                                Iccid = dt.Rows[0]["iccid"].ToString(),
+                                Simnum = dt.Rows[0]["simnum"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("GetSmsRecord Error! Msg:" + ex.Message);
+            }
+            return null;
         }
 
         #region job

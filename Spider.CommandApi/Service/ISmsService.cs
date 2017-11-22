@@ -32,10 +32,10 @@ namespace Spider.CommandApi.Service
         /// </summary>
         /// <param name="iccid">SIM卡唯一ICCID</param>
         /// <param name="smsRecordType">查询类型</param>
-        /// <param name="Otp">短信中包含字符</param>
+        /// <param name="otp">短信中包含字符</param>
         /// <param name="rDateTime">短信接受时间</param>
         /// <returns></returns>
-        SmsRecord GetSmsRecord(string iccid, SmsRecordType smsRecordType, string Otp, DateTime? rDateTime = null);
+        SmsRecord GetSmsRecord(string iccid, SmsRecordType smsRecordType, string otp, DateTime? rDateTime = null);
 
         /// <summary>
         /// 开始执行任务

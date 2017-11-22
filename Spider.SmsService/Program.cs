@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Spider.SmsService.Helper;
 using static System.Runtime.Remoting.RemotingConfiguration;
 
@@ -14,6 +13,7 @@ namespace Spider.GsmModemServer
         private static void Main()
         {
             Console.WriteLine($"Start Modem Service");
+            LogHelper.Info("Start Modem Service");
             //注册配置文件
             Configure(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile,false);
 
@@ -23,6 +23,7 @@ namespace Spider.GsmModemServer
             do
             {
             } while (Console.ReadLine() != "exit");
+            LogHelper.Info("End Modem Service");
         }
     }
 }
