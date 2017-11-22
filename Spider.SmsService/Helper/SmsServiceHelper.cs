@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Runtime.Remoting;
+using System.Threading;
 using Spider.CommandApi.Service;
 
 namespace Spider.SmsService.Helper
@@ -28,6 +30,20 @@ namespace Spider.SmsService.Helper
         {
             if (SmsService == null)
             {
+                //代码方式注册服务
+                try
+                {
+                    Console.WriteLine($"Open Public SmsService:{typeof(ISmsService).Name}");
+                    //注册服务端
+                    RemotingConfiguration.RegisterWellKnownServiceType(typeof(Service.SmsService),
+                        typeof(ISmsService).Name, WellKnownObjectMode.Singleton);
+                    Console.WriteLine($"Open Public SmsService:Success");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Open Public SpiderHostService:Fail");
+                }
+
                 SmsService = new Service.SmsService();
             }
 
